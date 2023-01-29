@@ -3,7 +3,7 @@ from aiogram.types import Message
 from base.keyboards import *
 from base.states import *
 from base.tools import *
-from bot.handlers.admin.admin_cq_handlers import (check_ad_view, get_current_date, database, cursor, bot,
+from bot.handlers.admin.admin_cq_handlers import (get_current_date, database, cursor, bot,
                                                   make_ad_settings,
                                                   TELEGRAM_API_KEY)
 from base.config import ADMIN_IDS, CREATE_MESSAGES_LIMIT, CATEGORIES
