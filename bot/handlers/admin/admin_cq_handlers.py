@@ -9,8 +9,7 @@ from base.tools import *
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import Dispatcher
 
-from base.config import (COMPLAINS_COUNT, CUSTOMIZE_AD_INTERVAL, COMPLAINS_PEER_ID, ADMIN_IDS, TELEGRAM_API_KEY,
-                         CATEGORIES)
+from base.config import ADMIN_IDS, TELEGRAM_API_KEY
 
 from aiogram import Bot
 import sqlite3
@@ -62,29 +61,29 @@ def make_ad_settings():
     return answer
 
 
-def check_ad_view(user_id) -> tuple | bool:
-    ad = cursor.execute(f'SELECT * FROM ad').fetchall()
-    if ad:
-        ad = ad[-1]
-        ad_id = ad[0]
-        ad_views = ad[1]
-        ad_unique = ad[3]
-        ad_limit = ad[4]
-
-        messages_count = \
-            cursor.execute(f'SELECT text_messages_count FROM user_statistics WHERE user_id={user_id}').fetchone()[0]
-        unique_ad_views = cursor.execute(f'SELECT COUNT(*) FROM ad_views '
-                                         f'WHERE user_id={user_id} AND ad_id={ad_id}').fetchone()[0]
-
-        if messages_count % CUSTOMIZE_AD_INTERVAL == 0 and messages_count > 0:
-            if (ad_unique == 1 and unique_ad_views <= ad_limit) or \
-                    (ad_unique == 0 and ad_views < ad_limit):
-                if ad_unique == 1:
-                    cursor.execute(f'INSERT INTO ad_views (user_id, ad_id) VALUES ('
-                                   f'{user_id}, {ad_id});')
-                cursor.execute(f'UPDATE ad SET views_count=views_count+1')
-                return ad
-    return False
+# def check_ad_view(user_id) -> tuple | bool:
+#     ad = cursor.execute(f'SELECT * FROM ad').fetchall()
+#     if ad:
+#         ad = ad[-1]
+#         ad_id = ad[0]
+#         ad_views = ad[1]
+#         ad_unique = ad[3]
+#         ad_limit = ad[4]
+#
+#         messages_count = \
+#             cursor.execute(f'SELECT text_messages_count FROM user_statistics WHERE user_id={user_id}').fetchone()[0]
+#         unique_ad_views = cursor.execute(f'SELECT COUNT(*) FROM ad_views '
+#                                          f'WHERE user_id={user_id} AND ad_id={ad_id}').fetchone()[0]
+#
+#         if messages_count % CUSTOMIZE_AD_INTERVAL == 0 and messages_count > 0:
+#             if (ad_unique == 1 and unique_ad_views <= ad_limit) or \
+#                     (ad_unique == 0 and ad_views < ad_limit):
+#                 if ad_unique == 1:
+#                     cursor.execute(f'INSERT INTO ad_views (user_id, ad_id) VALUES ('
+#                                    f'{user_id}, {ad_id});')
+#                 cursor.execute(f'UPDATE ad SET views_count=views_count+1')
+#                 return ad
+#     return False
 
 
 async def cancel(cq: CallbackQuery, state: FSMContext):
