@@ -6,7 +6,7 @@ from base.tools import *
 from bot.handlers.admin.admin_cq_handlers import (get_current_date, database, cursor, bot,
                                                   make_ad_settings,
                                                   TELEGRAM_API_KEY)
-from base.config import ADMIN_IDS, CREATE_MESSAGES_LIMIT, CATEGORIES
+from base.config import ADMIN_IDS
 import datetime
 
 
